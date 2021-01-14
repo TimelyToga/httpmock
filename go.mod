@@ -1,4 +1,4 @@
-module github.com/dankinder/httpmock
+module github.com/TimelyToga/httpmock
 
 go 1.12
 
