@@ -1,5 +1,11 @@
 # httpmock
 
+### NOTE 
+This is a fork of [dankinder/httpmock](https://github.com/dankinder/httpmock) in order to add some more useful functions: 
+
+1. `MockHandler.OnHandle()` and `MockHandler.OnHandleWithHeaders()`. These are nice because they are typed versions of the vargs versions that come for free by embedding the `mock.Mock` in the `MockHandler`
+
+
 <a href="https://pkg.go.dev/github.com/dankinder/httpmock?tab=doc"><img src="https://godoc.org/github.com/dankinder/httpmock?status.svg" alt="GoDoc" /></a>
 <a href="https://goreportcard.com/report/github.com/dankinder/httpmock"><img src="https://goreportcard.com/badge/github.com/dankinder/httpmock" alt="Go Report Card" /></a>
 <a href="https://travis-ci.org/dankinder/httpmock"><img src="https://travis-ci.org/dankinder/httpmock.svg?branch=master" alt="Build Status" /></a>
