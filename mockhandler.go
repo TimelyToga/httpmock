@@ -20,21 +20,20 @@ func (m *MockHandler) Handle(method, path string, body []byte) Response {
 	return args.Get(0).(Response)
 }
 
-// MockHandlerWithHeaders is a httpmock.Handler that uses github.com/stretchr/testify/mock.
-type MockHandlerWithHeaders struct {
-	mock.Mock
-}
-
-// Handle makes this implement the Handler interface.
-func (m *MockHandlerWithHeaders) Handle(method, path string, body []byte) Response {
-	args := m.Called(method, path, body)
-	return args.Get(0).(Response)
-}
-
 // HandleWithHeaders makes this implement the HandlerWithHeaders interface.
-func (m *MockHandlerWithHeaders) HandleWithHeaders(method, path string, headers http.Header, body []byte) Response {
+func (m *MockHandler) HandleWithHeaders(method, path string, headers http.Header, body []byte) Response {
 	args := m.Called(method, path, headers, body)
 	return args.Get(0).(Response)
+}
+
+// OnHandle is a typed, pass-through version of the mock.Mock.On() method to Handle()
+func (m *MockHandler) OnHandle(method, path string, body []byte) *mock.Call {
+	return m.On("Handle", method, path, body)
+}
+
+// OnHandleWithHeaders is a typed, pass-through version of the mock.Mock.On() method to HandleWithHeaders()
+func (m *MockHandler) OnHandleWithHeaders(method, path string, headers http.Header, body []byte) *mock.Call {
+	return m.On("HandleWithHeaders", method, path, headers, body)
 }
 
 // JSONMatcher returns a mock.MatchedBy func to check if the argument is the json form of the provided object.
