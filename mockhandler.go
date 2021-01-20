@@ -31,6 +31,24 @@ func (m *MockHandler) OnHandle(method, path string, body []byte) *mock.Call {
 	return m.On("Handle", method, path, body)
 }
 
+// OnHandleAnyBody is a typed, pass-through version of the mock.Mock.On() method to Handle() with a body of
+// mock.Anything
+func (m *MockHandler) OnRequestWithAnyBody(method, path string) *mock.Call {
+	return m.On("Handle", method, path, mock.Anything)
+}
+
+// OnAnyRequestToPath is a typed, pass-through version of the mock.Mock.On() method to Handle(). Any method and any
+// request body. Only the path is specified
+func (m *MockHandler) OnAnyRequestToPath(path string) *mock.Call {
+	return m.On("Handle", mock.Anything, path, mock.Anything)
+}
+
+// OnAnyRequestToPath is a typed, pass-through version of the mock.Mock.On() method to Handle(). Any request will be
+// caught by this.
+func (m *MockHandler) OnAnyRequest() *mock.Call {
+	return m.On("Handle", mock.Anything, mock.Anything, mock.Anything)
+}
+
 // OnHandleWithHeaders is a typed, pass-through version of the mock.Mock.On() method to HandleWithHeaders()
 func (m *MockHandler) OnHandleWithHeaders(method, path string, headers http.Header, body []byte) *mock.Call {
 	return m.On("HandleWithHeaders", method, path, headers, body)
