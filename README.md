@@ -1,10 +1,35 @@
-# httpmock
+## This is a fork of dankinder's httpmock 
+This is a fork of [dankinder/httpmock](https://github.com/dankinder/httpmock) in order to add some more useful functions. 
+The aim of these functions is to make the library more "batteries included". This means that you'll find functions that 
+will probably help you do what you want 98% of the time. 
 
-### NOTE 
-This is a fork of [dankinder/httpmock](https://github.com/dankinder/httpmock) in order to add some more useful functions: 
+### Added functions
+1. `MockHandler.OnHandle()`: Typed version of `handler.On("Handle", ...)`
+2. `MockHandler.OnHandleWithHeaders()`: : Typed version of `handler.On("HandleWithHeaders", ...)`
+2. `MockHandler.OnRequestWithAnyBody()`: typed pass-through to `handler.On(Handle, method, path, mock.Anthing (body))`
+3. `MockHandler.OnAnyRequestToPath()`: typed pass-through to `handler.On(Handle, mock.Anything (method), path, mock.Anything (body))`
+4. `MockHandler.OnAnyRequest()`: typed pass-through to `handler.On(Handle, mock.Anything (method), mock.Anything(path), mock.Anything (body))`
 
-1. `MockHandler.OnHandle()` and `MockHandler.OnHandleWithHeaders()`. These are nice because they are typed versions of the vargs versions that come for free by embedding the `mock.Mock` in the `MockHandler`
+#### Quick Examples of added functionality
+```go
+mHandler := &httpmock.MockHandler{}
+somePath := "/some/path/in-your-api"
 
+// Will match any request to somePath (GET/POST/PUT etc) and with any request body 
+mHandler.OnAnyRequestToPath(somePath).Return(httpmock.Response{
+	Body: []byte(`{"status": "ok"}`),
+})
+
+s := httpmock.NewServer(mHandler)
+defer s.Close()
+
+// Make requests to s.URL() in your code
+
+// Can also make this a defer right after declaration
+mHandler.AssertExpectations(t)
+```
+
+## Httpmock
 
 <a href="https://pkg.go.dev/github.com/dankinder/httpmock?tab=doc"><img src="https://godoc.org/github.com/dankinder/httpmock?status.svg" alt="GoDoc" /></a>
 <a href="https://goreportcard.com/report/github.com/dankinder/httpmock"><img src="https://goreportcard.com/badge/github.com/dankinder/httpmock" alt="Go Report Card" /></a>
