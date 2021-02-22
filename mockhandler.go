@@ -40,7 +40,10 @@ func (m *MockHandler) OnRequestWithAnyBody(method, path string) *mock.Call {
 // OnAnyRequestToPath is a typed, pass-through version of the mock.Mock.On() method to Handle(). Any method and any
 // request body. Only the path is specified
 func (m *MockHandler) OnAnyRequestToPath(path string) *mock.Call {
-	return m.On("Handle", mock.Anything, path, mock.Anything)
+	return m.On("Handle", mock.Anything, path, mock.Anything).
+		Maybe().
+		On("HandleWithHeaders", mock.Anything, path, mock.Anything, mock.Anything).
+		Maybe()
 }
 
 // OnAnyRequestToPath is a typed, pass-through version of the mock.Mock.On() method to Handle(). Any request will be
@@ -52,6 +55,14 @@ func (m *MockHandler) OnAnyRequest() *mock.Call {
 // OnHandleWithHeaders is a typed, pass-through version of the mock.Mock.On() method to HandleWithHeaders()
 func (m *MockHandler) OnHandleWithHeaders(method, path string, headers http.Header, body []byte) *mock.Call {
 	return m.On("HandleWithHeaders", method, path, headers, body)
+}
+
+func (m *MockHandler) OnAnyHeadersWithAnyBody(method, path string) *mock.Call {
+	return m.On("HandleWithHeaders", method, path, mock.Anything, mock.Anything)
+}
+
+func (m *MockHandler) OnAnyHeadersToPath(path string) *mock.Call {
+	return m.On("HandleWithHeaders", mock.Anything, path, mock.Anything, mock.Anything)
 }
 
 // JSONMatcher returns a mock.MatchedBy func to check if the argument is the json form of the provided object.
