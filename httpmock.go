@@ -91,6 +91,17 @@ type Response struct {
 	Body []byte
 }
 
+// OkJsonResponse will return an httpmock.Response with given response data object rendered into JSON and a 200 status
+// code.
+//
+// NOTE: This function will panic if marshalling the JSON fails, so only use in test code
+func OkJsonResponse(responseData interface{}) Response {
+	return Response{
+		Status: http.StatusOK,
+		Body:   ToJSON(responseData),
+	}
+}
+
 // Server listens for requests and interprets them into calls to your Handler.
 type Server struct {
 	httpServer *httptest.Server
